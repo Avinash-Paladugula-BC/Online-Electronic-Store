@@ -11,9 +11,7 @@ import (
 
 func DeliveryRoutes(r *gin.Engine, db *gorm.DB) {
 	var deliveryTable interfaces.Deliveries = handlers.NewDeliveryTable(db)
-	//done
-	r.GET("/delivery/:delivery_id", middleware.AuthMiddleware(), deliveryTable.GetDeliveryDetailsByOrderID) // the specific order of the customer delivery details needs to be returned
-	r.GET("/delivery", middleware.AuthMiddleware(), deliveryTable.GetDeliveryDetailsList)                            // get the list of all delivery updates of a user
-	r.POST("/delivery/create/:order_ID", middleware.AuthMiddleware(), deliveryTable.AddDelivery)                     // when a person makes a new order the delivery is created
-	// r.PUT("/delivery/:delivery_id/update", controller.DeliveryUpdate) // not required
+	r.GET("/delivery/:delivery_id", middleware.AuthMiddleware(), deliveryTable.GetDeliveryDetailsByOrderID)
+	r.GET("/delivery", middleware.AuthMiddleware(), deliveryTable.GetDeliveryDetailsList)        
+	r.POST("/delivery/create/:order_ID", middleware.AuthMiddleware(), deliveryTable.AddDelivery) 
 }

@@ -38,7 +38,6 @@ func (d *DeliveryTable) GetDeliveryDetailsByOrderID(c *gin.Context) {
 
 	var delivery models.Delivery
 	delivery, err := d.OrderDeliveryDetailsFromDB(uint(order_id))
-	// err := d.dB.Where("order_id = ?", uint(delivery_id)).First(&delivery).Error
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch delivery details"})

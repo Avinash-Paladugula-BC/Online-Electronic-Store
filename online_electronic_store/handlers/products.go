@@ -57,7 +57,6 @@ func (p *ProductTable) GetProductById(c *gin.Context) {
 func (p *ProductTable) GetProductByCategory(c *gin.Context) {
 	category := c.Param("category")
 	var products []models.Product
-	// *************** search on the category column not on the PK
 	if err := p.dB.Where("category = ?", category).Find(&products).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "category not found"})
 		return
@@ -82,7 +81,6 @@ func (p *ProductTable) CreateProduct(c *gin.Context) {
 	}
 
 	var product models.Product
-	// product = ProductTable.Create(c,)
 	if err := c.ShouldBindJSON(&product); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

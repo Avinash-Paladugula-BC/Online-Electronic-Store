@@ -9,22 +9,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// func init(){
-
-// }
 
 func main() {
 	db := config.ConnectDB()
 	config.DB = config.ConnectDB()
-	// create all
-
-	// controller.Delivery_table = tables.NewDeliveryTable(config.DB)
-	// controller.InstantiateDeliveryTable(db)
-	// controller.InstantiateOrderTable(db)
-	// controller.InstantiatePaymentTable(db)
-	// controller.InstantiateReviewTable(db)
-	// controller.InstantiateUserTable()
-	// controller.InstantiateProductTable(db)
 
 	r := gin.Default()
 	routes.ProductRoutes(r, db)

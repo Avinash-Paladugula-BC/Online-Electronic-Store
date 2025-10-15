@@ -28,7 +28,6 @@ func (p *PaymentTable) GetPaymentsOfUser(c *gin.Context) {
 	}
 	userID := userIDInterface.(uint)
 	var payments []models.Payment
-	// payments, err := PaymentTable.GetAll(c)
 	err := p.dB.Where("user_id = ?", userID).Find(&payments).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch payments"})
@@ -61,7 +60,6 @@ func (p *PaymentTable) CreatePayment(c *gin.Context) {
 		return
 	}
 	payment.OrderID = uint(orderID)
-	// err = PaymentTable.Create(c, payment)
 	err = p.dB.Create(&payment).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create Payment"})
@@ -85,7 +83,6 @@ func (p *PaymentTable) UpdatePayment(c *gin.Context) {
 		return
 	}
 	var payment models.Payment
-	// check if the records is present
 	if err := p.dB.First(&payment, "ID = ? AND user_id = ?", paymentID, userID).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Payment record not found"})

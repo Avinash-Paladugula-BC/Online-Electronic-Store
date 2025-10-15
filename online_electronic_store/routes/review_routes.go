@@ -11,9 +11,7 @@ import (
 
 func ReviewRoutes(r *gin.Engine, db *gorm.DB) {
 	var reviewTable interfaces.Reviews = handlers.NewReviewTable(db)
-	r.GET("/reviews/product/:product_id", middleware.AuthMiddleware(), reviewTable.GetReviewOnProductID) // given review of user of particular product
-
+	r.GET("/reviews/product/:product_id", middleware.AuthMiddleware(), reviewTable.GetReviewOnProductID) 
 	r.GET("/reviews", middleware.AuthMiddleware(), reviewTable.GetReviewsOnUserID)
-	r.POST("/review/:product_id/create", middleware.AuthMiddleware(), reviewTable.CreateReview) // add the review based on the given product_id
-	// r.PUT("/review/:product_id/update", middleware.AuthMiddleware(), controller.UpdateReview)  // update the review based on the
+	r.POST("/review/:product_id/create", middleware.AuthMiddleware(), reviewTable.CreateReview)
 }

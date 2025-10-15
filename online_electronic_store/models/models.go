@@ -57,13 +57,8 @@ type Order struct {
 	gorm.Model
 	ShippingAddress string `gorm:"column:shipping_address;not null" json:"shipping_address"`
 	UserID          uint   `gorm:"column:user_id;not null" json:"user_id"`
-	// ProductID       uint   `gorm:"column:user_id;not null" json:"product_id"`
 	Products []Product `gorm:foreignKey:OrderID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;not null" json:products`
 	User     User      `gorm:"foreignKey:UserID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"user"`
-	// PaymentID       uint       `gorm:"column:payment_id;not null" json:"payment_id"`
-	// Payment         Payment    `gorm:"foreignKey:PaymentID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"payment"`
-	//##################### multiple devlivery for single order doesn't exist
-	// Deliveries []Delivery `gorm:"foreignKey:OrderID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;" json:"deliveries"`
 }
 
 // {
@@ -76,9 +71,8 @@ type Order struct {
 
 type Payment struct {
 	gorm.Model
-	OrderID uint `gorm:"column:order_id;not null" json:"order_id"` //refers to the orderid in the the order struct
+	OrderID uint `gorm:"column:order_id;not null" json:"order_id"` 
 	UserID  uint `gorm:"column:user_id;not null" json:"user_id"`
-	// PaymentStatus bool   `gorm:"column:payment_status;not null" json:"payment_status"`
 	PaymentStatus string `gorm:"column:payment_status;not null" json:"payment_status"`
 	PaymentMethod string `gorm:"column:payment_method;not null" json:"payment_method"`
 	TransactionID string `gorm:"column:transaction_id;not null" json:"transaction_id"`

@@ -30,7 +30,6 @@ func (r *ReviewTable) GetReviewOnProductID(c *gin.Context) {
 	productIDInterface := c.Param("product_id")
 	productID, _ := strconv.Atoi(productIDInterface)
 	var review models.Review
-	// review, err := ReviewTable.GetByID(c, uint(product_id))
 	err := r.dB.Where("user_id = ? and product_id = ?", userID, productID).Find(&review)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch review details"})

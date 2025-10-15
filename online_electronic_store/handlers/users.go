@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"online_electronic_store/auth"
@@ -52,14 +51,11 @@ func (u *UserTable) Register(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// encrypting the password, cost factor of 12 is better to avoid over computation
 	encrypted_password, err := bcrypt.GenerateFromPassword([]byte(user.Password), 12)
 	if err != nil {
 		log.Print("Error while generating password", err.Error())
 	}
 	user.Password = string(encrypted_password)
-	// Adding the new user
-	fmt.Println("in the user......................", u.dB)
 	if err := u.dB.Create(&user).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "unable to create user", "error": err.Error()})
 		return

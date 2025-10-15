@@ -2,17 +2,7 @@ package interfaces
 
 import (
 	"github.com/gin-gonic/gin"
-	_ "github.com/gin-gonic/gin"
 )
-
-// type Online_Electronic_Store_DB[T any] interface {
-// 	Create(c *gin.Context, data T) error
-// 	GetByID(c *gin.Context, id uint) (T, error) // get record on id
-// 	GetAll(c *gin.Context) ([]T, error)        // get all records
-// 	// Update(data T) error // update on id--need to check if its valid for all tables
-// 	// Delete(id int) ()
-// }
-
 type Deliveries interface{
 	GetDeliveryDetailsByOrderID(*gin.Context) 
 	GetDeliveryDetailsList(*gin.Context)

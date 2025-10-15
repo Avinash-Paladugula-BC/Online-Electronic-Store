@@ -30,7 +30,6 @@ func (o *OrderTable) GetOrders(c *gin.Context) {
 	userID := userIDInterface.(uint)
 	var orders []models.Order
 	err := o.dB.Where("user_id = ?", userID).Find(&orders).Error
-	// orders, err := OrderTable.GetAll(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch orders"})
 		return
@@ -54,7 +53,6 @@ func (o *OrderTable) MakeOrder(c *gin.Context) {
 	}
 	order.UserID = userID
 	err := o.dB.Create(&order).Error
-	// err := OrderTable.Create(c, order)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create order"})
 		return
