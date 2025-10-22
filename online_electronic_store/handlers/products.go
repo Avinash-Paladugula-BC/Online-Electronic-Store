@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"net/http"
-	"online_electronic_store/config"
+	// "online_electronic_store/config"
 	"online_electronic_store/interfaces"
 	"online_electronic_store/models"
 	"strconv"
@@ -11,17 +11,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type ProductTable struct {
+type productTable struct {
 	dB *gorm.DB
 }
 
 func NewProductTable(DB *gorm.DB) interfaces.Products {
-	return &ProductTable{
+	return &productTable{
 		dB: DB,
 	}
 }
 
-func (p *ProductTable) GetProducts(c *gin.Context) {
+func (p *productTable) GetProducts(c *gin.Context) {
 	var products []models.Product
 	result := p.dB.Find(&products)
 	if result.Error != nil {
@@ -40,7 +40,7 @@ func (p *ProductTable) GetProducts(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, response)
 }
-func (p *ProductTable) GetProductById(c *gin.Context) {
+func (p *productTable) GetProductById(c *gin.Context) {
 	id := c.Param("id")
 	productID, err := strconv.Atoi(id)
 	if err != nil {
@@ -54,7 +54,7 @@ func (p *ProductTable) GetProductById(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, product)
 }
-func (p *ProductTable) GetProductByCategory(c *gin.Context) {
+func (p *productTable) GetProductByCategory(c *gin.Context) {
 	category := c.Param("category")
 	var products []models.Product
 	if err := p.dB.Where("category = ?", category).Find(&products).Error; err != nil {
@@ -63,7 +63,7 @@ func (p *ProductTable) GetProductByCategory(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"category": category, "products": products})
 }
-func (p *ProductTable) CreateProduct(c *gin.Context) {
+func (p *productTable) CreateProduct(c *gin.Context) {
 	userIDInterface, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not logged in"})
@@ -92,7 +92,7 @@ func (p *ProductTable) CreateProduct(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Product created"})
 }
-func (p *ProductTable) UpdateProductOnId(c *gin.Context) {
+func (p *productTable) UpdateProductOnId(c *gin.Context) {
 	userIDInterface, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not logged in"})
@@ -116,7 +116,7 @@ func (p *ProductTable) UpdateProductOnId(c *gin.Context) {
 		return
 	}
 	var product models.Product
-	if err := config.DB.First(&product, "id = ?", productID).Error; err != nil {
+	if err := p.dB.First(&product, "id = ?", productID).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			c.JSON(http.StatusNotFound, gin.H{"error": "Product record not found"})
 			return
@@ -128,8 +128,8 @@ func (p *ProductTable) UpdateProductOnId(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	product.ID = uint(productID)
-	if err := config.DB.Save(&product).Error; err != nil {
+	// product.ID = uint(productID)
+	if err := p.dB.Save(&product).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update product"})
 		return
 	}

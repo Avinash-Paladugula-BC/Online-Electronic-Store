@@ -17,7 +17,6 @@ import (
 // export USER="postgres"
 // export PASSWORD="Avi@2004"
 
-var DB *gorm.DB//////////////////
 
 func ConnectDB() *gorm.DB{ // return DB here
 	// host := "localhost"
@@ -25,11 +24,12 @@ func ConnectDB() *gorm.DB{ // return DB here
 	// user := "postgres"
 	// password := "Avi@2004"
 	// dbname := "online_electronic_store"
+	var DB *gorm.DB//////////////////
 	creds := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		os.Getenv("HOST"), os.Getenv("USER"), os.Getenv("PASSWORD"), os.Getenv("DB_NAME"), os.Getenv("PORT"))
 	// DB, err := gorm.Open("postgres", creds)
 	var err error
-	DB, err := gorm.Open(postgres.Open(creds), &gorm.Config{})
+	DB, err = gorm.Open(postgres.Open(creds), &gorm.Config{})
 	if err != nil {
 		log.Printf("Error occured : ", err.Error())
 	}

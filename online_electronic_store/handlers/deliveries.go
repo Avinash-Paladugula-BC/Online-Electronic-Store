@@ -10,24 +10,24 @@ import (
 	"gorm.io/gorm"
 )
 
-type DeliveryTable struct {
+type deliveryTable struct {
 	dB *gorm.DB
 }
 
 func NewDeliveryTable(DB *gorm.DB) interfaces.Deliveries {
-	return &DeliveryTable{
+	return &deliveryTable{
 		dB: DB,
 	}
 }
 
 
-func (d *DeliveryTable) OrderDeliveryDetailsFromDB(orderID uint)(models.Delivery, error){
+func (d *deliveryTable) OrderDeliveryDetailsFromDB(orderID uint)(models.Delivery, error){
 	var delivery models.Delivery
 	err := d.dB.Where("order_id = ?", orderID).First(&delivery).Error
 	return delivery,err
 }
 
-func (d *DeliveryTable) GetDeliveryDetailsByOrderID(c *gin.Context) {
+func (d *deliveryTable) GetDeliveryDetailsByOrderID(c *gin.Context) {
 	_, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not logged in"})
@@ -50,7 +50,7 @@ func (d *DeliveryTable) GetDeliveryDetailsByOrderID(c *gin.Context) {
 }
 
 
-func (d *DeliveryTable) GetAllDeliveriesFromDB(userID uint) ([]models.Delivery, error){
+func (d *deliveryTable) GetAllDeliveriesOfUser(userID uint) ([]models.Delivery, error){
 	var deliveries []models.Delivery
 	err := d.dB.
 		Joins("JOIN orders ON orders.id = deliveries.order_id").
@@ -58,7 +58,7 @@ func (d *DeliveryTable) GetAllDeliveriesFromDB(userID uint) ([]models.Delivery, 
 		Find(&deliveries).Error
 	return deliveries, err
 }
-func (d *DeliveryTable) GetDeliveryDetailsList(c *gin.Context) {
+func (d *deliveryTable) GetDeliveryDetailsList(c *gin.Context) {
 	userIDInterface, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not logged in"})
@@ -67,7 +67,7 @@ func (d *DeliveryTable) GetDeliveryDetailsList(c *gin.Context) {
 	userID := userIDInterface.(uint)
 	var deliveries []models.Delivery
 
-	deliveries, err := d.GetAllDeliveriesFromDB(userID)
+	deliveries, err := d.GetAllDeliveriesOfUser(userID)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch delivery details"})
@@ -86,10 +86,10 @@ func (d *DeliveryTable) GetDeliveryDetailsList(c *gin.Context) {
 	})
 }
 
-func (d *DeliveryTable) InsertDeliveryIntoDB(delivery models.Delivery) error{
+func (d *deliveryTable) InsertDeliveryIntoDB(delivery models.Delivery) error{
 	return d.dB.Create(&delivery).Error
 }
-func (d *DeliveryTable) AddDelivery(c *gin.Context) {
+func (d *deliveryTable) AddDelivery(c *gin.Context) {
 	orderIDInterface := c.Param("order_ID")
 	orderID, err := strconv.Atoi(orderIDInterface)
 	if err != nil {

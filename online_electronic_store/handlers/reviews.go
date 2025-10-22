@@ -10,17 +10,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type ReviewTable struct {
+type reviewTable struct {
 	dB *gorm.DB
 }
 
 func NewReviewTable(DB *gorm.DB) interfaces.Reviews {
-	return &ReviewTable{
+	return &reviewTable{
 		dB: DB,
 	}
 }
 
-func (r *ReviewTable) GetReviewOnProductID(c *gin.Context) {
+func (r *reviewTable) GetReviewOnProductID(c *gin.Context) {
 	userIDInterface, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "user not found"})
@@ -40,7 +40,7 @@ func (r *ReviewTable) GetReviewOnProductID(c *gin.Context) {
 		"review":  review,
 	})
 }
-func (r *ReviewTable) GetReviewsOnUserID(c *gin.Context) {
+func (r *reviewTable) GetReviewsOnUserID(c *gin.Context) {
 	userIDInterface, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not logged in"})
@@ -57,7 +57,7 @@ func (r *ReviewTable) GetReviewsOnUserID(c *gin.Context) {
 		"reviews": reviews,
 	})
 }
-func (r *ReviewTable) CreateReview(c *gin.Context) {
+func (r *reviewTable) CreateReview(c *gin.Context) {
 	userIDInterface, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not logged in"})

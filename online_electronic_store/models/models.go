@@ -16,7 +16,7 @@ type Product struct {
 	Price    float64  `gorm:"column:price; not null" json:"price"`
 	Brand    string   `gorm:"column:brand"  json:"brand"`
 	Quantity uint     `gorm:"column:quantity; not null" json:"quantity"`
-	OrderId  uint     `gorm:"column:order_id" json:"order_id"`
+	// OrderId  uint     `gorm:"column:order_id" json:"order_id"`
 	Reviews  []Review `gorm:"foreignKey:ProductID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"  json:"reviews"`
 }
 

@@ -12,7 +12,7 @@ import (
 
 func main() {
 	db := config.ConnectDB()
-	config.DB = config.ConnectDB()
+	// config.DB = config.ConnectDB()
 
 	r := gin.Default()
 	routes.ProductRoutes(r, db)

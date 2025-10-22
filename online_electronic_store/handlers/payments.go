@@ -10,17 +10,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type PaymentTable struct {
+type paymentTable struct {
 	dB *gorm.DB
 }
 
 func NewPaymentTable(DB *gorm.DB) interfaces.Payments {
-	return &PaymentTable{
+	return &paymentTable{
 		dB: DB,
 	}
 }
 
-func (p *PaymentTable) GetPaymentsOfUser(c *gin.Context) {
+func (p *paymentTable) GetPaymentsOfUser(c *gin.Context) {
 	userIDInterface, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not logged in"})
@@ -48,7 +48,7 @@ func (p *PaymentTable) GetPaymentsOfUser(c *gin.Context) {
 		"payments": response,
 	})
 }
-func (p *PaymentTable) CreatePayment(c *gin.Context) {
+func (p *paymentTable) CreatePayment(c *gin.Context) {
 	order_ID_string := c.Param("order_ID")
 	orderID, err := strconv.Atoi(order_ID_string)
 	if err != nil {
@@ -69,7 +69,7 @@ func (p *PaymentTable) CreatePayment(c *gin.Context) {
 		"message": "Payment added successfully",
 	})
 }
-func (p *PaymentTable) UpdatePayment(c *gin.Context) {
+func (p *paymentTable) UpdatePayment(c *gin.Context) {
 	userIDInterface, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not logged in"})

@@ -12,17 +12,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type UserTable struct {
+type userTable struct {
 	dB *gorm.DB
 }
 
 func NewUserTable(DB *gorm.DB) interfaces.Users {
-	return &UserTable{
+	return &userTable{
 		dB: DB,
 	}
 }
 
-func (u *UserTable) Login(c *gin.Context) {
+func (u *userTable) Login(c *gin.Context) {
 	var req models.User
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -45,7 +45,7 @@ func (u *UserTable) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token})
 }
 
-func (u *UserTable) Register(c *gin.Context) {
+func (u *userTable) Register(c *gin.Context) {
 	var user models.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"net/http"
-	"online_electronic_store/config"
+	// "online_electronic_store/config"
 	"online_electronic_store/interfaces"
 	"online_electronic_store/models"
 	"strconv"
@@ -11,17 +11,17 @@ import (
 	"gorm.io/gorm"
 )
 
-type OrderTable struct {
+type orderTable struct {
 	dB *gorm.DB
 }
 
 func NewOrderTable(DB *gorm.DB) interfaces.Orders {
-	return &OrderTable{
+	return &orderTable{
 		dB: DB,
 	}
 }
 
-func (o *OrderTable) GetOrders(c *gin.Context) {
+func (o *orderTable) GetOrders(c *gin.Context) {
 	userIDInterface, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not logged in"})
@@ -39,7 +39,7 @@ func (o *OrderTable) GetOrders(c *gin.Context) {
 		"orders":  orders,
 	})
 }
-func (o *OrderTable) MakeOrder(c *gin.Context) {
+func (o *orderTable) MakeOrder(c *gin.Context) {
 	userIDInterface, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not logged in"})
@@ -61,7 +61,7 @@ func (o *OrderTable) MakeOrder(c *gin.Context) {
 		"message": "Order created successfully",
 	})
 }
-func (o *OrderTable) UpdateOrder(c *gin.Context) {
+func (o *orderTable) UpdateOrder(c *gin.Context) {
 	userIDInterface, exists := c.Get("userID")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not logged in"})
@@ -87,8 +87,8 @@ func (o *OrderTable) UpdateOrder(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	order.UserID = userID
-	if err := config.DB.Save(&order).Error; err != nil {
+	// order.UserID = userID
+	if err := o.dB.Save(&order).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update order"})
 		return
 	}

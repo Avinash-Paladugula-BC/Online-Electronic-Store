@@ -27,7 +27,7 @@ func setupTestDB() *gorm.DB {
 
 func TestInsertDeliveryIntoDB(t *testing.T) {
 	db := setupTestDB()
-	deliveryTable := &DeliveryTable{dB: db}
+	deliveryTable := &deliveryTable{dB: db}
 
 	delivery := models.Delivery{
 		DeliveryStatus: "Cancelled",
@@ -47,7 +47,7 @@ func TestInsertDeliveryIntoDB(t *testing.T) {
 
 func TestOrderDeliveryDetailsFromDB(t *testing.T) {
 	db := setupTestDB()
-	deliveryTable := &DeliveryTable{dB: db}
+	deliveryTable := &deliveryTable{dB: db}
 	db.Create(&models.Delivery{DeliveryStatus: "Delivered", OrderID: 1})
 	db.Create(&models.Delivery{DeliveryStatus: "Shipped", OrderID: 2})
 	result, err := deliveryTable.OrderDeliveryDetailsFromDB(1)
@@ -63,12 +63,12 @@ func TestOrderDeliveryDetailsFromDB(t *testing.T) {
 
 func TestGetAllDeliveriesFromDB(t *testing.T) {
 	db := setupTestDB()
-	deliveryTable := &DeliveryTable{dB: db}
+	deliveryTable := &deliveryTable{dB: db}
 	db.Create(&models.Delivery{DeliveryStatus: "Delivered", OrderID: 10})
 	db.Create(&models.Delivery{DeliveryStatus: "Shipped", OrderID: 5})
 	db.Create(&models.Delivery{DeliveryStatus: "Pending", OrderID: 7})
 
-	deliveries, err := deliveryTable.GetAllDeliveriesFromDB(3)
+	deliveries, err := deliveryTable.GetAllDeliveriesOfUser(3)
 	assert.NoError(t, err, "Error while getting the valid user details")
 	assert.Len(t, deliveries, 2, "UserId 3 has exactly 2 deliveries(in the database)")
 	assert.ElementsMatch(t,
@@ -78,7 +78,7 @@ func TestGetAllDeliveriesFromDB(t *testing.T) {
 	assert.Equal(t, "Dispatched", deliveries[0].DeliveryStatus, "Delivery status value mismatch")
 	assert.Equal(t, uint(3), deliveries[0].OrderID, "OrderID value mismatch")
 
-	deliveries, err = deliveryTable.GetAllDeliveriesFromDB(123)
+	deliveries, err = deliveryTable.GetAllDeliveriesOfUser(123)
 	assert.NoError(t, err, "Didnt receive error when fething with the wrong usrId")
 	assert.Len(t, deliveries, 0, "should get an empty slice for non-existing userID")
 }
