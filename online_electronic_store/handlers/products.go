@@ -128,7 +128,6 @@ func (p *productTable) UpdateProductOnId(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// product.ID = uint(productID)
 	if err := p.dB.Save(&product).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to update product"})
 		return

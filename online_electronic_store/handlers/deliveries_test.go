@@ -14,8 +14,6 @@ import (
 )
 
 func setupTestDB() *gorm.DB {
-	// creds := fmt.Sprintf("user=%s password=%s dbname=oes_test sslmode=disable",
-	// 	os.Getenv("USER"), os.Getenv("PASSWORD"))
 	creds := fmt.Sprintf("host=localhost user=postgres password=Avi@2004 dbname=oes sslmode=disable")
 	db, err := gorm.Open(postgres.Open(creds), &gorm.Config{})
 	if err != nil {
